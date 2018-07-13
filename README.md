@@ -1,2 +1,2 @@
 # Cerveza
-Para sa webdev namin ni Jeth hihe
+Pakyu sa Prof namin sa WebDev
