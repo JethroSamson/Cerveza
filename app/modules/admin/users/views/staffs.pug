@@ -1,0 +1,141 @@
+extends ../../../../templates/admin
+
+block content
+        link(rel='stylesheet', type='text/css', href='/assets/css/inventory.css')
+        script(type='text/javascript', src='/assets/js/jquery.min.js')
+        link(rel='stylesheet', type='text/css', href='/assets/js/bootstrap.min.css')
+        script(type='text/javascript', src='/assets/js/bootstrap.min.js')
+        br
+        .row
+            .col-sm-12
+                .card(style="width:100%; min-width:300px;")
+                    .card-header
+                        h4.subtitle(style="padding:2px;") Staffs
+                        .div(stye="float:right; margin-left:50%;")
+                            button.btn.btn-success(data-toggle='modal', data-target='#addmaterials') Add
+                    .card-block.table-border-style
+                        .table-responsive(style="width:100%; min-width:200px;")
+                            table.table
+                                thead
+                                    tr
+                                        th Staff Name
+                                        th Status
+                                        th Action
+                                        th
+                                each staff in staffstab
+                                    tr
+                                        td #{staff.strLname}  #{staff.strFname}
+                                        td #{staff.strStatus}
+                                        td
+                                            - console.log(staff.strLname)
+                                            if staff.intStatus == 1
+                                                button.btn.btn-primary(data-toggle='modal', data-target='#editmaterials', data-lname=staff.strLname, data-fname=staff.strFname, data-user=staff.strUsername, data-pass=staff.strPassword, data-stat=staff.strStatus, data-id=staff.intStaffId) Edit
+                                            if staff.intStatus == 0
+                                                button.btn.btn-danger(type="button" , disabled) Deleted
+                                        td
+                                            if staff.strType == "admin"
+                                            else if staff.intStatus == 1
+                                                form(method="POST"  action="/admin/staffs/delete")
+                                                    input#name.form-control(type='number', value=staff.intStaffId name="id" required, hidden)
+                                                    button.btn.btn-danger(type='submit') Delete
+                                            else if staff.intStatus == 0
+                                                form(method="POST"  action="/admin/staffs/revert")
+                                                    input#name.form-control(type='number', value=staff.intStaffId name="id" required, hidden)
+                                                    button.btn.btn-info(type='submit') Revert
+                                        
+                            
+
+            
+            
+            #addmaterials.modal.fade.modal-icon(tabindex='-1', role='dialog', aria-labelledby='addmaterial', aria-hidden='true')
+                .modal-dialog(role='document')
+                    form(method="POST"  action="/admin/staffs")
+                        .modal-content
+                            .modal-header
+                                h4#myModalLabel.modal-title Add Staff
+                                button.close(type='button', data-dismiss='modal', aria-label='Close')
+                                    span(aria-hidden='true') ×
+                            .modal-body
+                                .row
+                                    .col-md-4
+                                        .form-group
+                                            | First Name
+                                            input#name.form-control(type='text', name='fname')
+                                    .col-md-4
+                                        .form-group
+                                            | Last Name
+                                            input#name.form-control(type='text', name='lname')
+                                .row
+                                    .col-md-8
+                                        .form-group
+                                            | Username
+                                            input#name.form-control(type='text', name='user')
+                                .row
+                                    .col-md-8
+                                        .form-group
+                                            | Password
+                                            input#name.form-control(type='password', name='pass')
+                            .modal-footer
+                                button.btn.btn-secondary(type='submit') Submit
+                                button.btn.btn-secondary(type='button', data-dismiss='modal') Close          
+        each staff in staffstab
+            #editmaterials.modal.fade.modal-icon(tabindex='-1', role='dialog', aria-labelledby='editmaterials', aria-hidden='true')
+                .modal-dialog(role='document')
+                    form(method="POST"  action="/admin/staffs/edit")
+                        .modal-content
+                            .modal-header
+                                h4#myModalLabel.modal-title Edit Staff
+                                button.close(type='button', data-dismiss='modal', aria-label='Close')
+                                    span(aria-hidden='true') ×
+                            .modal-body
+                                .row
+                                    .col-md-4
+                                        .form-group
+                                            | First Name
+                                            input#fname.form-control(type='text', name='fname')
+                                    .col-md-4
+                                        .form-group
+                                            | Last Name
+                                            input#lname.form-control(type='text', name='lname')
+                                .row
+                                    .col-md-8
+                                        .form-group
+                                            | Username
+                                            input#user.form-control(type='text', name='user')
+                                .row
+                                    .col-md-8
+                                        .form-group
+                                            | Password
+                                            input#pass.form-control(type='password', name='pass')
+                                        .form-group
+                                            input#id.form-control(type='text', name="staffid" required, hidden)
+                                .row    
+                                    .col-md-4
+                                        .form-group
+                                            .input.is-primary
+                                                select#stat(name="status" required)
+                                                    option(value='Available') Available
+                                                    option(value='Leave') Leave
+                                                    option(value='Unavailable') Unavailable
+                                                    option(value='Suspended') Suspended
+                            .modal-footer
+                                button.btn.btn-secondary(type='submit') Edit
+                                button.btn.btn-secondary(type='button', data-dismiss='modal') Close
+                script.
+                    $('#editmaterials').on('show.bs.modal', function (event) {
+                    var button = $(event.relatedTarget)
+                    var lname = button.data('lname')
+                    var fname = button.data('fname')
+                    var user = button.data('user')
+                    var pass = button.data('pass')
+                    var stat = button.data('stat')
+                    var id = button.data('id')
+
+                    var modal = $(this)
+                    modal.find('.modal-body #lname').val(lname)
+                    modal.find('.modal-body #fname').val(fname)
+                    modal.find('.modal-body #user').val(user)
+                    modal.find('.modal-body #pass').val(pass)
+                    modal.find('.modal-body #stat').val(stat)
+                    modal.find('.modal-body #id').val(id)
+                    })

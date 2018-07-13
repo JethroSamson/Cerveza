@@ -1,0 +1,47 @@
+extends ./base
+
+block body
+    .style
+        link(rel='stylesheet', href='/assets/css/style.css', type='text/css', media='all')
+    #header
+        .shell
+            // Logo + Top Nav
+            #top
+                h1
+                    img(src="source='/assets/images/logocerveza.png", alt="", srcset="")
+                    span.title(style="color:white;") Welcome to Cerveza
+                #top-navigation
+                    a(href='/logout')(style="text-decoration:none;")
+                        .subtitle Log-out
+                    
+                // End Logo + Top Nav
+                // Main Nav
+            #navigation
+                ul
+                    li
+                        a(href='/login')
+                            span Dashboard
+                    li
+                        a(href='/inventory')
+                            span Inventory
+                    li
+                        a(href='/server')
+                            span Server
+                    li
+                        a(href='/orders')
+                            span Order Products
+
+                //- .div(style="float:right")  
+                //-     a(href='/admin')
+                //-         span
+                //-             button.btn.btn-primary Admin
+
+        div.container
+            block content
+
+
+        #footer(style="margin-left:10px;")
+            a(href='https://www.instagram.com/pupcerveza', target='_blank') 
+                img(src='assets/src/insta.png', style=height='30px', width='30px', alt='instagram')
+            a(href='https://www.facebook.com/pupcerveza/', target='_blank') 
+                img(src='assets/src/fb.png', style= height='30px', width='30px', alt='facebook')
